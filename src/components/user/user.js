@@ -1,32 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./style.css";
+import warmupApi from "../../apis/warmup";
 
-// import getUsers from "../../actions/user";
-// import { userContext } from "../warmpup/warmup";
-
-function User() {
-  // const data = useContext(userContext);
+function UserList() {
   const [userList, setUserList] = useState([]);
   const history = useHistory();
 
-  const getUserData = async () => {
-    let res;
-    try {
-      res = await fetch(`https://jsonplaceholder.typicode.com/users`);
-      const data = await res.json();
-      setUserList(data);
-      return { status: "success" };
-    } catch (e) {
-      if (!e.response || !e.response.data) {
-        return { status: "error", type: "network", message: "Network Error" };
-      }
-      return { status: "error", ...e.response.data };
-    }
+  const getUserList = async () => {
+    const res = await warmupApi("users");
+    setUserList(res.data);
   };
 
   useEffect(() => {
-    getUserData();
+    getUserList();
   }, []);
 
   return (
@@ -56,4 +43,4 @@ function User() {
   );
 }
 
-export default User;
+export default UserList;

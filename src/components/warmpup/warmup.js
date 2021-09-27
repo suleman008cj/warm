@@ -2,27 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./style.css";
 
-import getUsers from "../../actions/user";
-import User from "../user/user";
-
 export const userContext = React.createContext([]);
 function Warmup() {
   const history = useHistory();
-  const [data, setData] = useState([]);
-
-  // const getUserData = async () => {
-  //   const data = await getUsers();
-  //   setData(data);
-  // };
-
-  // useEffect(() => {
-  //   getUserData();
-  // }, []);
 
   const handleUser = () => {
-    // <userContext.Provider value={{ data }}>
-    //   <User />
-    // </userContext.Provider>;
     history.push("/user");
   };
   return (

@@ -1,24 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import "./style.css";
+import warmupApi from "../../apis/warmup";
 
 function Post(props) {
   const [posts, setPosts] = useState([]);
   const history = useHistory();
 
   const getPosts = async () => {
-    let res;
-    try {
-      res = await fetch(`https://jsonplaceholder.typicode.com/posts`);
-      const data = await res.json();
-      setPosts(data);
-      return { status: "success" };
-    } catch (e) {
-      if (!e.response || !e.response.data) {
-        return { status: "error", type: "network", message: "Network Error" };
-      }
-      return { status: "error", ...e.response.data };
-    }
+    const res = await warmupApi("posts");
+    setPosts(res.data);
   };
 
   useEffect(() => {

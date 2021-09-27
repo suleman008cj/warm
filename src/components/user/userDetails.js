@@ -1,30 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import "./style.css";
+import warmupApi from "../../apis/warmup";
 
 function UserDetails(props) {
   const [user, setUser] = useState();
   const history = useHistory();
 
-  const getUser = async () => {
-    let res;
-    try {
-      res = await fetch(
-        `https://jsonplaceholder.typicode.com/users/${props.location.state.id}`
-      );
-      const data = await res.json();
-      setUser(data);
-      return { status: "success" };
-    } catch (e) {
-      if (!e.response || !e.response.data) {
-        return { status: "error", type: "network", message: "Network Error" };
-      }
-      return { status: "error", ...e.response.data };
-    }
+  const getUserDetails = async () => {
+    const res = await warmupApi(`users/${props.location.state.id}`);
+    setUser(res.data);
   };
 
   useEffect(() => {
-    getUser();
+    getUserDetails();
   }, []);
 
   return (

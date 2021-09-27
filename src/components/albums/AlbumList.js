@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import warmupApi from "../../apis/warmup";
 import "./style.css";
 
 function Albums(props) {
@@ -7,18 +8,8 @@ function Albums(props) {
   const history = useHistory();
 
   const getAlbums = async () => {
-    let res;
-    try {
-      res = await fetch(`https://jsonplaceholder.typicode.com/albums`);
-      const data = await res.json();
-      setAlbums(data);
-      return { status: "success" };
-    } catch (e) {
-      if (!e.response || !e.response.data) {
-        return { status: "error", type: "network", message: "Network Error" };
-      }
-      return { status: "error", ...e.response.data };
-    }
+    const res = await warmupApi("albums");
+    setAlbums(res.data);
   };
 
   useEffect(() => {

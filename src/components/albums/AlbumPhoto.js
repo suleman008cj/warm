@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import "./style.css";
+import warmupApi from "../../apis/warmup";
 
 function AlbumPhoto(props) {
   const [albums, setAlbums] = useState([]);
   const history = useHistory();
 
   const getAlbumPhotos = async () => {
-    let res;
-    try {
-      res = await fetch(
-        `https://jsonplaceholder.typicode.com/albums/${props.location.state.id}/photos`
-      );
-      const data = await res.json();
-      setAlbums(data);
-      return { status: "success" };
-    } catch (e) {
-      if (!e.response || !e.response.data) {
-        return { status: "error", type: "network", message: "Network Error" };
-      }
-      return { status: "error", ...e.response.data };
-    }
+    const res = await warmupApi(`albums/${props.location.state.id}/photos`);
+    setAlbums(res.data);
   };
 
   useEffect(() => {
